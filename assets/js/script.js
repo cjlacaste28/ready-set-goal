@@ -13,6 +13,7 @@ const saveTitleBtn = document.getElementById('save-title');
 
 const addGoalBtn = document.getElementById('add-goal');
 const saveGoalBtn = document.getElementById('save-goal');
+const updateGoalBtn = document.getElementById('update-goal');
 const termPicker = document.getElementById('term-picker');
 const goalInput = document.getElementById('validationServer04');
 const goalsForm = document.getElementById('goalsForm');
@@ -25,6 +26,7 @@ const goals = GoalsDB.get('goals');
 const user = currLogin.value()[0].username;
 const title = currLogin.value()[0].title;
 
+let currIdForUpdate = 0;
 // const ltListElement = document.getElementById('lt-list');
 // const mtListElement = document.getElementById('mt-list');
 // const stListElement = document.getElementById('st-list');
@@ -50,6 +52,13 @@ const addGoal = (goalObj) => goals.push(goalObj).write();
 
 //delete goal record
 const deleteGoal = (goalID) => goals.remove({ id: goalID }).write();
+
+//edit goal record
+const editGoal = (goalID, term, goalName) =>
+    goals.find({ id: goalID }).assign({ term: term }, { goal: goalName }).write();
+
+
+
 
 
 //update goal title
@@ -77,7 +86,7 @@ const loadGoals = (terms, list) => {
                                     class="fas fa-check"></i>&nbsp;&nbsp;Done</a>
                             <a class="dropdown-item undone-goal d-none" href="#"><i
                                     class="fas fa-redo"></i>&nbsp;&nbsp;Undone</a>
-                            <a class="dropdown-item edit-goal" href="#"><i
+                            <a class="dropdown-item edit-goal" data-toggle="modal" data-target="#addGoalsModal" id="edit-goal" href="#"><i
                                     class="fas fa-edit"></i>&nbsp;&nbsp;Edit</a>
                             <a class="dropdown-item delete-goal" href="#"><i
                                     class="fas fa-trash"></i>&nbsp;&nbsp;Remove</a>
@@ -90,10 +99,21 @@ const loadGoals = (terms, list) => {
     })
 }
 
+//counts the goals at specific term <ul>
 const termLengthChecker = (term) => {
     return goals.filter(e => e.term === term && e.username === user).value().length;
 }
 
+//add mode
+const addMode = () => {
+    document.querySelector('#update-goal').classList.add('d-none')
+    document.querySelector('#save-goal').classList.remove('d-none')
+}
+//edit mode
+const editMode = () => {
+    document.querySelector('#save-goal').classList.add('d-none')
+    document.querySelector('#update-goal').classList.remove('d-none')
+}
 
 const deleteConfirm = (element, id, term, list) => {
     Swal.fire({
@@ -124,7 +144,14 @@ const deleteConfirm = (element, id, term, list) => {
     })
 }
 
-
+const editGoalInit = (goalID, term, list) => {
+    const goalName = document.querySelector(`${list} > li > div > span`).innerText
+    editMode();
+    goalsForm.classList.remove("was-validated");
+    termPicker.value = term;
+    goalInput.value = goalName;
+    currIdForUpdate = goalID;
+}
 
 /*****************  EVENT LISTENER  ******************/
 logoutBtn.addEventListener('click', () => {
@@ -152,14 +179,13 @@ saveTitleBtn.addEventListener('click', () => {
 });
 
 addGoalBtn.addEventListener('click', () => {
-    goalsForm.classList.remove("was-validated")
-
-    const test = document.getElementsByClassName('goal-buttons')
-    console.log(test);
+    addMode();
+    goalsForm.classList.remove("was-validated");
 });
 
+//add goal record
 saveGoalBtn.addEventListener('click', () => {
-    const goalObj = goalsInputCheck()
+    const goalObj = goalsAddInputCheck()
     if (goalObj.isSuccess) {
         addGoal(goalObj.data)
         Swal.fire(
@@ -171,7 +197,21 @@ saveGoalBtn.addEventListener('click', () => {
         })
     }
 });
+//update goal record
+updateGoalBtn.addEventListener('click', () => {
+    const goalObj = goalUpdateInputCheck(currIdForUpdate)
+    if (goalObj.isSuccess) {
+        Swal.fire(
+            'Successful!',
+            goalObj.msg,
+            'success'
+        ).then((result) => {
+            location.reload();
+        })
+    }
+});
 
+//LONG TERM LIST
 ltList.addEventListener("click", function (event) {
     if (event.target.className === "dropdown-item delete-goal") {
         const goalElement = event.target.parentNode.parentNode.parentNode
@@ -180,8 +220,15 @@ ltList.addEventListener("click", function (event) {
         deleteConfirm(goalElement, goalID, "long-term", '#lt-list');
     }
 
-});
+    if (event.target.className.includes("edit-goal")) {
+        const goalElement = event.target.parentNode.parentNode.parentNode
+            .parentNode.parentNode;
+        const goalID = parseInt(goalElement.dataset.id);
+        editGoalInit(goalID, "long-term", '#lt-list')
+    }
 
+});
+//MIDIUM TERM LIST
 mtList.addEventListener("click", function (event) {
     if (event.target.className === "dropdown-item delete-goal") {
         const goalElement = event.target.parentNode.parentNode.parentNode
@@ -190,8 +237,15 @@ mtList.addEventListener("click", function (event) {
         deleteConfirm(goalElement, goalID, "midium-term", '#mt-list');
     }
 
-});
+    if (event.target.className.includes("edit-goal")) {
+        const goalElement = event.target.parentNode.parentNode.parentNode
+            .parentNode.parentNode;
+        const goalID = parseInt(goalElement.dataset.id);
+        editGoalInit(goalID, "midium-term", '#mt-list')
+    }
 
+});
+//SHORT TERM LIST
 stList.addEventListener("click", function (event) {
     if (event.target.className === "dropdown-item delete-goal") {
         const goalElement = event.target.parentNode.parentNode.parentNode
@@ -200,12 +254,19 @@ stList.addEventListener("click", function (event) {
         deleteConfirm(goalElement, goalID, "short-term", '#st-list');
     }
 
+    if (event.target.className.includes("edit-goal")) {
+        const goalElement = event.target.parentNode.parentNode.parentNode
+            .parentNode.parentNode;
+        const goalID = parseInt(goalElement.dataset.id);
+        editGoalInit(goalID, "short-term", '#st-list')
+    }
+
 });
 
 
 /*****************  VALIDATION  ******************/
-
-const goalsInputCheck = () => {
+//add input validation
+const goalsAddInputCheck = () => {
     const goalVal = goalInput.value.trim();
     let ctr = 0;
 
@@ -237,6 +298,35 @@ const goalsInputCheck = () => {
         }
     }
 }
+//update  goal input validation
+const goalUpdateInputCheck = (currId) => {
+    const goalVal = goalInput.value.trim();
+    let ctr = 0;
+
+    if (termPicker.value === '') {
+        goalsForm.classList.add("was-validated")
+        ctr++;
+    } else if (goalVal === '') {
+        goalsForm.classList.add("was-validated")
+        ctr++;
+    } else {
+        if (ctr === 0) {
+            editGoal(currId, termPicker.value, goalVal)
+            return {
+                isSuccess: true,
+                msg: 'Goal has been updated'
+            }
+        } else {
+            return {
+                isSuccess: false,
+                msg: 'Please check the fields error'
+            }
+        }
+    }
+
+}
+
+
 
 function my_code() {
     //title init 
