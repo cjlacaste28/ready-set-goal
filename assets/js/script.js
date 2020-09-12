@@ -162,7 +162,7 @@ logoutBtn.addEventListener('click', () => {
         'success'
     ).then((result) => {
         if (result.isConfirmed) {
-            location.replace(`${baseurl}/ready-set-goal/index.html`);
+            location.replace(`${baseurl}/ready-set-goal/`);
         }
     })
 });
