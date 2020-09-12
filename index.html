@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style2.css">
+    <!-- Font Awsome -->
+    <script src="https://kit.fontawesome.com/562501533e.js"></script>
+    <title>Ready Set Goal!</title>
+</head>
+
+<body>
+    <div class="container" id="container">
+
+        <!-- REGISTRATION FORM -->
+        <div class="form-container sign-up-container">
+            <form id="registerForm" autocomplete="off">
+                <h1 class="mb-20">Create Account</h1>
+
+                <div class="form-control">
+                    <input type="text" placeholder="Goal Title" id="title" />
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+
+                <div class="form-control">
+                    <input type="text" placeholder="Username" id="username" />
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+
+                <div class="form-control">
+                    <input type="password" placeholder="Password" id="password" />
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+
+                <div class="form-control">
+                    <input type="password" placeholder="Confirm Password" id="password2" />
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+
+                <button class="mt-20">Sign Up</button>
+            </form>
+        </div>
+
+        <!-- SIGN IN FORM -->
+        <div class="form-container sign-in-container">
+            <form id="loginForm" autocomplete="off">
+                <h1 class="mb-20 mt-neg">Sign in</h1>
+                <!-- <input type="text" placeholder="Username" />
+                <input type="password" placeholder="Password" />
+                <a href="#">Forgot your password?</a> -->
+                <div class="form-control">
+                    <input type="text" placeholder="Username" id="usernameLogin" />
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+                <div class="form-control">
+                    <input type="password" placeholder="Password" id="passwordLogin" />
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+                <button class="mt-20">Sign In</button>
+            </form>
+        </div>
+
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <img src="./assets/img/logo.png" alt="logo" class="logo" width="220">
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <img src="./assets/img/logo.png" alt="logo" class="logo" width="220">
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOW DB -->
+    <script src="https://unpkg.com/lodash@4/lodash.min.js"></script>
+    <script src="https://unpkg.com/lowdb@0.17/dist/low.min.js"></script>
+    <script src="https://unpkg.com/lowdb@0.17/dist/LocalStorage.min.js"></script>
+    <!-- SweetAlert2 CDN  -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- SCRIPT -->
+    <script src="./assets/js/script2.js"></script>
+</body>
+
+</html>

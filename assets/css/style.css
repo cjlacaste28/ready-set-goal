@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* NAV */
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1,
+h6 {
+    font-weight: 600;
+}
+
+li {
+    list-style-type: none;
+}
+
+.nav-brand {
+    width: 250px;
+}
+
+.setting-box {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.settings {
+    width: 30px;
+    margin: 12px;
+}
+
+
+/* GOALS */
+.bg-st {
+    background-color: #f2dcdb;
+}
+
+.bg-mt {
+    background-color: #daeef3;
+}
+
+.bg-lt {
+    background-color: #d8e4bc;
+}
+
+.fa-inbox {
+    font-size: 100px;
+}
+
+
+.goalData {
+    padding: 10px 2%;
+    border-bottom: 1px solid #999;
+}
+
+.goalData:hover .ellipsis-menu {
+    visibility: visible;
+}
+
+.goalData span {
+    display: inline-block;
+    width: 86%;
+}
+
+.ellipsis-menu {
+    display: inline-block;
+    position: absolute;
+    margin-left: 5%;
+    width: 7%;
+    visibility: visible;
+    /* padding-left: 2.75%; */
+    cursor: pointer;
+}
+
+.ellipsis-menu i {
+    position: relative;
+    font-size: 16px;
+}
+
+@media (max-width: 1024px) {
+
+    .ellipsis-menu {
+        display: inline-block;
+        position: absolute;
+        width: 6%;
+        margin-left: 6%;
+        visibility: visible;
+        /* padding-left: 2.75%; */
+        cursor: pointer;
+    }
+}
+
+.goals-done-text {
+    color: #d9d9dd;
+    text-decoration: line-through;
+}
+
+/* ADD ICON */
+.float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #007bff;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 2px 2px 3px #999;
+}
+
+.my-float {
+    margin-top: 22px;
+}
+
+
+/******************************/

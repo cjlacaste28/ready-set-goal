@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <!-- Font Awsome -->
+    <script src="https://kit.fontawesome.com/562501533e.js"></script>
+    <title>Ready Set Goal!</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <img src="./assets/img/logo2.png" alt="logo" class="nav-brand">
+        <div class="setting-box" data-toggle="modal" data-target="#titleModal">
+            <img src="./assets/img/settings.png" alt="wrench-icon" class="settings" width="30">
+        </div>
+    </nav>
+
+    <!-- GOAL TITLE -->
+    <div class="title my-4">
+        <h1 class="text-center" id="goal-title"></h1>
+    </div>
+
+    <!-- GOALS CONTAINER -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- SHORT TERM GOALS -->
+            <div class="col-lg-4 mb-4" id="short">
+                <div class="card">
+                    <div class="card-header text-center bg-st">
+                        <h6>SHORT TERM</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="empty-list">
+                            <i class="fas fa-inbox text-black-50 d-block text-center"></i>
+                            <p class="empty-list-desc d-block text-center text-black-50">List is empty</p>
+                        </div>
+                        <ul id="st-list" class="goal-list" aria-label="List of short term goals"></ul>
+                    </div>
+                </div>
+            </div>
+            <!-- MIDIUM TERM GOALS -->
+            <div class="col-lg-4 mb-4" id="mid">
+                <div class="card">
+                    <div class="card-header text-center bg-mt">
+                        <h6> MIDIUM TERM</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="empty-list">
+                            <i class="fas fa-inbox text-black-50 d-block text-center"></i>
+                            <p class="empty-list-desc d-block text-center text-black-50">List is empty</p>
+                        </div>
+                        <ul id="mt-list" class="goal-list" aria-label="List of medium term goals"></ul>
+                    </div>
+                </div>
+            </div>
+            <!-- LONG TERM GOALS -->
+            <div class="col-lg-4 mb-4" id="long">
+                <div class="card">
+                    <div class="card-header text-center bg-lt">
+                        <h6>LONG TERM</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="empty-list">
+                            <i class="fas fa-inbox text-black-50 d-block text-center"></i>
+                            <p class="empty-list-desc d-block text-center text-black-50">List is empty</p>
+                        </div>
+                        <ul id="lt-list" class="goal-list" aria-label="List of long term goals"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING ADD BUTTON -->
+    <a href="#" class="float" data-toggle="modal" data-target="#addGoalsModal" id="add-goal">
+        <i class="fa fa-plus my-float"></i>
+    </a>
+
+    <!-- Title modal -->
+    <div class="modal fade" id="titleModal" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Set your Goal Title</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input class="col border round ed-0 form-control" type="name" placeholder="Title" name="title"
+                        id="title-input">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mr-auto" id="logout">Logout</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-title">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Goals modal -->
+    <div class="modal fade" id="addGoalsModal" tabindex="-1" role="dialog" aria-labelledby="addGoalsModal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Set your Goal Title</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="" id="goalsForm">
+                        <!--class="was-validated" -->
+                        <select class="custom-select" id="term-picker" required>
+                            <option value="">-- Select Goal Terms --</option>
+                            <option value="short-term">Short Term</option>
+                            <option value="midium-term">Midium Term</option>
+                            <option value="long-term">Long Term</option>
+                        </select>
+                        <div class="invalid-feedback ">Please select goal terms</div>
+                        <input type="text" class="form-control mt-3" id="validationServer04" placeholder="Goal"
+                            type="name" required>
+                        <div class="invalid-feedback" id="goal-error">
+                            Goals must not be empty.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-goal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/lodash@4/lodash.min.js"></script>
+    <script src="https://unpkg.com/lowdb@0.17/dist/low.min.js"></script>
+    <script src="https://unpkg.com/lowdb@0.17/dist/LocalStorage.min.js"></script>
+    <!-- SWEET ALERT 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- JavaScript -->
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>
