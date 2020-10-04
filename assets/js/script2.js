@@ -3,7 +3,7 @@ let adapter = new LocalStorage("GoalsDB");
 let GoalsDB = low(adapter);
 //db init
 GoalsDB.defaults({ users: [], goals: [], currLogin: [] }).write();
-const baseurl = window.location.origin+window.location.pathname;
+const baseurl = window.location.origin;
 console.log(baseurl);
 /********************* INITIALIZATION ***********************/
 const signUpButton = document.getElementById('signUp');
@@ -95,7 +95,7 @@ loginForm.addEventListener('submit', e => {
             showConfirmButton: false,
             timer: 2000
         }).then((result) => {
-            location.replace(`${baseurl}/ready-set-goal/main.html`);
+            location.replace(`${baseurl}/main.html`);
         })
     }
 });
@@ -227,7 +227,7 @@ function my_code() {
             showConfirmButton: false,
             timer: 3000
         }).then((result) => {
-            location.replace(`${baseurl}/ready-set-goal/main.html`);
+            location.replace(`${baseurl}/main.html`);
         })
     }
 }
