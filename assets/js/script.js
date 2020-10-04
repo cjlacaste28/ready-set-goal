@@ -3,6 +3,25 @@ let adapter = new LocalStorage("GoalsDB");
 let GoalsDB = low(adapter);
 
 const baseurl = window.location.origin;
+const usersDB = GoalsDB.get('users');
+const currLogin = GoalsDB.get('currLogin');
+const goals = GoalsDB.get('goals');
+
+//Session Check
+function check_session() {
+    if (currLogin.value().length === 0) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Redirecting to login page...',
+            showConfirmButton: false,
+            timer: 1500
+        }).then((result) => {
+            location.replace(`${baseurl}`);
+        })
+    }
+}
+window.onload = check_session();
 
 /********************* INITIALIZATION ***********************/
 const goalTitle = document.getElementById('goal-title');
@@ -19,9 +38,10 @@ const goalInput = document.getElementById('validationServer04');
 const goalsForm = document.getElementById('goalsForm');
 
 
-const usersDB = GoalsDB.get('users');
-const currLogin = GoalsDB.get('currLogin');
-const goals = GoalsDB.get('goals');
+
+
+
+
 
 const user = currLogin.value()[0].username;
 const title = currLogin.value()[0].title;
@@ -57,7 +77,9 @@ const deleteGoal = (goalID) => goals.remove({ id: goalID }).write();
 const editGoal = (goalID, term, goalName) =>
     goals.find({ id: goalID }).assign({ term: term }, { goal: goalName }).write();
 
-
+//update status
+const setStatus = (goalID, stats) =>
+    goals.find({ id: goalID }).assign({ status: stats }).write();
 
 
 
@@ -67,13 +89,17 @@ const updateTitle = (currTitle) => {
     usersDB.find({ username: user }).assign({ title: currTitle }).write()
 }
 
+
 //load goals data
 const loadGoals = (terms, list) => {
+    let isDone, isUndone;
     terms.forEach((el) => {
+        isDone = '', isUndone = '';
+        (el.status == 'undone') ? isUndone = "d-none" : isDone = "d-none";
         const data = `
         <li data-id="${el.id}">
             <div class="goalData">
-                <span>${el.goal}</span>
+                <span class="${el.status}">${el.goal}</span>
                 <div class="ellipsis-menu">
                     <div class="dropdown dropleft">
                         <a type="button" id="dropdownMenu2" data-toggle="dropdown"
@@ -82,9 +108,9 @@ const loadGoals = (terms, list) => {
                             <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-primary goal-buttons">
-                            <a class="dropdown-item done-goal" href="#"><i
+                            <a class="dropdown-item done-goal ${isDone}" href="#"><i
                                     class="fas fa-check"></i>&nbsp;&nbsp;Done</a>
-                            <a class="dropdown-item undone-goal d-none" href="#"><i
+                            <a class="dropdown-item undone-goal ${isUndone}" href="#"><i
                                     class="fas fa-redo"></i>&nbsp;&nbsp;Undone</a>
                             <a class="dropdown-item edit-goal" data-toggle="modal" data-target="#addGoalsModal" id="edit-goal" href="#"><i
                                     class="fas fa-edit"></i>&nbsp;&nbsp;Edit</a>
@@ -115,6 +141,37 @@ const editMode = () => {
     document.querySelector('#update-goal').classList.remove('d-none')
 }
 
+//goal set to done
+const setDone = (goalID) => {
+    //show undone button
+    document.querySelectorAll(`li[data-id="${goalID}"] > div > div > div > div > a`)[1]
+        .classList.remove('d-none');
+    //hide done button    
+    document.querySelectorAll(`li[data-id="${goalID}"] > div > div > div > div > a`)[0]
+        .classList.add('d-none');
+    //put line-through on goal text
+    const goalName = document.querySelector(`li[data-id="${goalID}"] > div > span`)
+        .classList.replace("undone", "done")
+    //update status on database    
+    setStatus(goalID, "done");
+}
+
+//goal set to undone
+const setUndone = (goalID) => {
+    //show done button
+    document.querySelectorAll(`li[data-id="${goalID}"] > div > div > div > div > a`)[0]
+        .classList.remove('d-none');
+    //hide undone button    
+    document.querySelectorAll(`li[data-id="${goalID}"] > div > div > div > div > a`)[1]
+        .classList.add('d-none');
+    //remove line-through on goal text
+    const goalName = document.querySelector(`li[data-id="${goalID}"] > div > span`)
+        .classList.replace("done", "undone")
+    //update status on database    
+    setStatus(goalID, "undone");
+}
+
+
 const deleteConfirm = (element, id, term, list) => {
     Swal.fire({
         title: 'Are you sure?',
@@ -144,14 +201,18 @@ const deleteConfirm = (element, id, term, list) => {
     })
 }
 
+//setup edit on popup form
 const editGoalInit = (goalID, term, list) => {
-    const goalName = document.querySelector(`${list} > li > div > span`).innerText
+    const goalName = document.querySelector(`li[data-id="${goalID}"] > div > span`).innerText
     editMode();
     goalsForm.classList.remove("was-validated");
     termPicker.value = term;
     goalInput.value = goalName;
     currIdForUpdate = goalID;
 }
+
+
+
 
 /*****************  EVENT LISTENER  ******************/
 logoutBtn.addEventListener('click', () => {
@@ -162,24 +223,35 @@ logoutBtn.addEventListener('click', () => {
         'success'
     ).then((result) => {
         if (result.isConfirmed) {
-            location.replace(`${baseurl}/ready-set-goal/`);
+            location.replace(`${baseurl}`);
         }
     })
 });
 
 saveTitleBtn.addEventListener('click', () => {
-    updateTitle(titleInput.value.trim());
-    Swal.fire(
-        'Done!',
-        'Update Successful',
-        'success'
-    ).then((result) => {
-        location.reload();
-    })
+    if (titleInput.value.trim() !== '') {
+        updateTitle(titleInput.value.trim());
+        Swal.fire(
+            'Done!',
+            'Update Successful',
+            'success'
+        ).then((result) => {
+            location.reload();
+        })
+    } else {
+        Swal.fire(
+            'Opss...',
+            'Goal Title should not be empty ',
+            'error'
+        ).then((result) => {
+            location.reload();
+        })
+    }
 });
 
+//floating add button
 addGoalBtn.addEventListener('click', () => {
-    addMode();
+    addMode(); goalsForm.reset();
     goalsForm.classList.remove("was-validated");
 });
 
@@ -213,52 +285,69 @@ updateGoalBtn.addEventListener('click', () => {
 
 //LONG TERM LIST
 ltList.addEventListener("click", function (event) {
-    if (event.target.className === "dropdown-item delete-goal") {
-        const goalElement = event.target.parentNode.parentNode.parentNode
-            .parentNode.parentNode;
-        const goalID = parseInt(goalElement.dataset.id);
+    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+    const goalID = parseInt(goalElement.dataset.id);
+    if (event.target.className.includes("delete-goal")) {
         deleteConfirm(goalElement, goalID, "long-term", '#lt-list');
     }
 
     if (event.target.className.includes("edit-goal")) {
-        const goalElement = event.target.parentNode.parentNode.parentNode
-            .parentNode.parentNode;
-        const goalID = parseInt(goalElement.dataset.id);
-        editGoalInit(goalID, "long-term", '#lt-list')
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        editGoalInit(goalID, "long-term", '#lt-list');
     }
+    // console.log(document.querySelectorAll(`li[data-id="${goalID}"] > div > div > div > div > a`)[1].classList.remove('d-none'));
+    if (event.target.className.includes("done-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setDone(goalID);
+    }
+    if (event.target.className.includes("undone-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setUndone(goalID);
+    }
+
 
 });
 //MIDIUM TERM LIST
 mtList.addEventListener("click", function (event) {
-    if (event.target.className === "dropdown-item delete-goal") {
-        const goalElement = event.target.parentNode.parentNode.parentNode
-            .parentNode.parentNode;
-        const goalID = parseInt(goalElement.dataset.id);
+    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+    const goalID = parseInt(goalElement.dataset.id);
+    if (event.target.className.includes("delete-goal")) {
         deleteConfirm(goalElement, goalID, "midium-term", '#mt-list');
     }
 
     if (event.target.className.includes("edit-goal")) {
-        const goalElement = event.target.parentNode.parentNode.parentNode
-            .parentNode.parentNode;
-        const goalID = parseInt(goalElement.dataset.id);
-        editGoalInit(goalID, "midium-term", '#mt-list')
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        editGoalInit(goalID, "midium-term", '#mt-list');
+    }
+    if (event.target.className.includes("done-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setDone(goalID);
+    }
+    if (event.target.className.includes("undone-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setUndone(goalID);
     }
 
 });
 //SHORT TERM LIST
 stList.addEventListener("click", function (event) {
-    if (event.target.className === "dropdown-item delete-goal") {
-        const goalElement = event.target.parentNode.parentNode.parentNode
-            .parentNode.parentNode;
-        const goalID = parseInt(goalElement.dataset.id);
+    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+    const goalID = parseInt(goalElement.dataset.id);
+    if (event.target.className.includes("delete-goal")) {
         deleteConfirm(goalElement, goalID, "short-term", '#st-list');
     }
 
     if (event.target.className.includes("edit-goal")) {
-        const goalElement = event.target.parentNode.parentNode.parentNode
-            .parentNode.parentNode;
-        const goalID = parseInt(goalElement.dataset.id);
-        editGoalInit(goalID, "short-term", '#st-list')
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        editGoalInit(goalID, "short-term", '#st-list');
+    }
+    if (event.target.className.includes("done-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setDone(goalID);
+    }
+    if (event.target.className.includes("undone-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setUndone(goalID);
     }
 
 });
@@ -285,7 +374,7 @@ const goalsAddInputCheck = () => {
                     id: Math.floor(Math.random() * Date.now()),
                     term: termPicker.value,
                     goal: goalVal,
-                    status: "ongoing",
+                    status: "undone",
                     username: user
                 }
             }
@@ -328,7 +417,10 @@ const goalUpdateInputCheck = (currId) => {
 
 
 
+
+
 function my_code() {
+
     //title init 
     goalTitle.innerText = title
     titleInput.value = title;
