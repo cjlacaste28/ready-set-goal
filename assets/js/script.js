@@ -2,7 +2,7 @@
 let adapter = new LocalStorage("GoalsDB");
 let GoalsDB = low(adapter);
 
-const baseurl = window.location.origin.location;
+const baseurl = window.location.origin;
 const usersDB = GoalsDB.get('users');
 const currLogin = GoalsDB.get('currLogin');
 const goals = GoalsDB.get('goals');
