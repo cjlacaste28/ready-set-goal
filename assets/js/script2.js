@@ -227,7 +227,7 @@ function my_code() {
             showConfirmButton: false,
             timer: 3000
         }).then((result) => {
-            location.replace(`${baseurl}/main.html`);
+            location.replace(`${baseurl}/ready-set-goal/main.html`);
         })
     }
 }
