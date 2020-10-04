@@ -17,6 +17,11 @@ h6 {
     font-weight: 600;
 }
 
+h5 {
+    font-weight: 600;
+    margin-bottom: 0
+}
+
 li {
     list-style-type: none;
 }
@@ -101,6 +106,12 @@ li {
     text-decoration: line-through;
 }
 
+.term-label {
+    padding: 0;
+    margin: 0;
+    font-size: smaller;
+}
+
 /* ADD ICON */
 .float {
     position: fixed;
@@ -119,5 +130,11 @@ li {
     margin-top: 22px;
 }
 
+
+.done {
+    text-decoration: line-through;
+    color: #999;
+    font-style: italic;
+}
 
 /******************************/
