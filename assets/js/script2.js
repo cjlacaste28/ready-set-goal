@@ -95,7 +95,7 @@ loginForm.addEventListener('submit', e => {
             showConfirmButton: false,
             timer: 2000
         }).then((result) => {
-            location.replace(`${baseurl}/main.html`);
+            location.replace(`${baseurl}main.html`);
         })
     }
 });
@@ -227,7 +227,7 @@ function my_code() {
             showConfirmButton: false,
             timer: 3000
         }).then((result) => {
-            location.replace(`${baseurl}/ready-set-goal/main.html`);
+            location.replace(`${baseurl}main.html`);
         })
     }
 }
