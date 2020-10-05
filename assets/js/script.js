@@ -57,7 +57,67 @@ const stGoals = goals.filter(e => e.term === "short-term" && e.username === user
 const stList = document.getElementById('st-list');
 
 
+/*****************  VALIDATION  ******************/
+//add input validation
+const goalsAddInputCheck = () => {
+    const goalVal = goalInput.value.trim();
+    let ctr = 0;
 
+    if (termPicker.value === '') {
+        goalsForm.classList.add("was-validated")
+        ctr++;
+    } else if (goalVal === '') {
+        goalsForm.classList.add("was-validated")
+        ctr++;
+    } else {
+        if (ctr === 0) {
+            return {
+                isSuccess: true,
+                msg: 'Goal has been added',
+                data: {
+                    id: Math.floor(Math.random() * Date.now()),
+                    term: termPicker.value,
+                    goal: goalVal,
+                    status: "undone",
+                    username: user
+                }
+            }
+        } else {
+            return {
+                isSuccess: false,
+                msg: 'Please check the fields error',
+                data: null
+            }
+        }
+    }
+}
+//update  goal input validation
+const goalUpdateInputCheck = (currId) => {
+    const goalVal = goalInput.value.trim();
+    let ctr = 0;
+
+    if (termPicker.value === '') {
+        goalsForm.classList.add("was-validated")
+        ctr++;
+    } else if (goalVal === '') {
+        goalsForm.classList.add("was-validated")
+        ctr++;
+    } else {
+        if (ctr === 0) {
+            editGoal(currId, termPicker.value, goalVal)
+            return {
+                isSuccess: true,
+                msg: 'Goal has been updated'
+            }
+        } else {
+            return {
+                isSuccess: false,
+                msg: 'Please check the fields error'
+            }
+        }
+    }
+
+}
 
 /*****************  EVENT LISTENER  ******************/
 logoutBtn.addEventListener('click', () => {
@@ -346,68 +406,6 @@ const editGoalInit = (goalID, term, list) => {
     termPicker.value = term;
     goalInput.value = goalName;
     currIdForUpdate = goalID;
-}
-
-/*****************  VALIDATION  ******************/
-//add input validation
-const goalsAddInputCheck = () => {
-    const goalVal = goalInput.value.trim();
-    let ctr = 0;
-
-    if (termPicker.value === '') {
-        goalsForm.classList.add("was-validated")
-        ctr++;
-    } else if (goalVal === '') {
-        goalsForm.classList.add("was-validated")
-        ctr++;
-    } else {
-        if (ctr === 0) {
-            return {
-                isSuccess: true,
-                msg: 'Goal has been added',
-                data: {
-                    id: Math.floor(Math.random() * Date.now()),
-                    term: termPicker.value,
-                    goal: goalVal,
-                    status: "undone",
-                    username: user
-                }
-            }
-        } else {
-            return {
-                isSuccess: false,
-                msg: 'Please check the fields error',
-                data: null
-            }
-        }
-    }
-}
-//update  goal input validation
-const goalUpdateInputCheck = (currId) => {
-    const goalVal = goalInput.value.trim();
-    let ctr = 0;
-
-    if (termPicker.value === '') {
-        goalsForm.classList.add("was-validated")
-        ctr++;
-    } else if (goalVal === '') {
-        goalsForm.classList.add("was-validated")
-        ctr++;
-    } else {
-        if (ctr === 0) {
-            editGoal(currId, termPicker.value, goalVal)
-            return {
-                isSuccess: true,
-                msg: 'Goal has been updated'
-            }
-        } else {
-            return {
-                isSuccess: false,
-                msg: 'Please check the fields error'
-            }
-        }
-    }
-
 }
 
 
