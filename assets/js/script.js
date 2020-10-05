@@ -328,15 +328,15 @@ const termLengthChecker = (term) => {
 }
 
 //add mode
-const addMode = () => {
-    document.querySelector('#update-goal').classList.add('d-none')
-    document.querySelector('#save-goal').classList.remove('d-none')
-}
-//edit mode
-const editMode = () => {
-    document.querySelector('#save-goal').classList.add('d-none')
-    document.querySelector('#update-goal').classList.remove('d-none')
-}
+// const addMode = () => {
+//     document.querySelector('#update-goal').classList.add('d-none')
+//     document.querySelector('#save-goal').classList.remove('d-none')
+// }
+// //edit mode
+// const editMode = () => {
+//     document.querySelector('#save-goal').classList.add('d-none')
+//     document.querySelector('#update-goal').classList.remove('d-none')
+// }
 
 //goal set to done
 const setDone = (goalID) => {
@@ -401,7 +401,7 @@ const deleteConfirm = (element, id, term, list) => {
 //setup edit on popup form
 const editGoalInit = (goalID, term, list) => {
     const goalName = document.querySelector(`li[data-id="${goalID}"] > div > span`).innerText
-    editMode();
+    //editMode();
     goalsForm.classList.remove("was-validated");
     termPicker.value = term;
     goalInput.value = goalName;
