@@ -335,7 +335,7 @@ saveGoalBtn.addEventListener('click', () => {
     }
 });
 //update goal record
-updateGoalBtn.addEventListener('click', () => {
+updateGoalBtn.addEventListener("click", function () {
     const goalObj = goalUpdateInputCheck(currIdForUpdate)
     if (goalObj.isSuccess) {
         Swal.fire(
