@@ -327,7 +327,7 @@ const termLengthChecker = (term) => {
     return goals.filter(e => e.term === term && e.username === user).value().length;
 }
 
-add mode
+//add mode
 const addMode = () => {
     document.querySelector('#update-goal').classList.add('d-none')
     document.querySelector('#save-goal').classList.remove('d-none')
