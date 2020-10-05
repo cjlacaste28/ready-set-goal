@@ -156,7 +156,7 @@ saveTitleBtn.addEventListener('click', () => {
 
 //floating add button
 addGoalBtn.addEventListener('click', () => {
-    //addMode();
+    addMode();
     goalsForm.reset();
     goalsForm.classList.remove("was-validated");
 });
@@ -327,16 +327,16 @@ const termLengthChecker = (term) => {
     return goals.filter(e => e.term === term && e.username === user).value().length;
 }
 
-//add mode
-// const addMode = () => {
-//     document.querySelector('#update-goal').classList.add('d-none')
-//     document.querySelector('#save-goal').classList.remove('d-none')
-// }
-// //edit mode
-// const editMode = () => {
-//     document.querySelector('#save-goal').classList.add('d-none')
-//     document.querySelector('#update-goal').classList.remove('d-none')
-// }
+add mode
+const addMode = () => {
+    document.querySelector('#update-goal').classList.add('d-none')
+    document.querySelector('#save-goal').classList.remove('d-none')
+}
+//edit mode
+const editMode = () => {
+    document.querySelector('#save-goal').classList.add('d-none')
+    document.querySelector('#update-goal').classList.remove('d-none')
+}
 
 //goal set to done
 const setDone = (goalID) => {
@@ -401,7 +401,7 @@ const deleteConfirm = (element, id, term, list) => {
 //setup edit on popup form
 const editGoalInit = (goalID, term, list) => {
     const goalName = document.querySelector(`li[data-id="${goalID}"] > div > span`).innerText
-    //editMode();
+    editMode();
     goalsForm.classList.remove("was-validated");
     termPicker.value = term;
     goalInput.value = goalName;
