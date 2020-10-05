@@ -38,11 +38,6 @@ const goalInput = document.getElementById('validationServer04');
 const goalsForm = document.getElementById('goalsForm');
 
 
-
-
-
-
-
 const user = currLogin.value()[0].username;
 const title = currLogin.value()[0].title;
 
@@ -214,74 +209,6 @@ const editGoalInit = (goalID, term, list) => {
 
 
 
-/*****************  EVENT LISTENER  ******************/
-logoutBtn.addEventListener('click', () => {
-    logout();
-    Swal.fire(
-        'Goodbye!',
-        'Logout Successful',
-        'success'
-    ).then((result) => {
-        if (result.isConfirmed) {
-            location.replace(`${baseurl}/ready-set-goal`);
-        }
-    })
-});
-
-saveTitleBtn.addEventListener('click', () => {
-    if (titleInput.value.trim() !== '') {
-        updateTitle(titleInput.value.trim());
-        Swal.fire(
-            'Done!',
-            'Update Successful',
-            'success'
-        ).then((result) => {
-            location.reload();
-        })
-    } else {
-        Swal.fire(
-            'Opss...',
-            'Goal Title should not be empty ',
-            'error'
-        ).then((result) => {
-            location.reload();
-        })
-    }
-});
-
-//floating add button
-addGoalBtn.addEventListener('click', () => {
-    addMode(); goalsForm.reset();
-    goalsForm.classList.remove("was-validated");
-});
-
-//add goal record
-saveGoalBtn.addEventListener('click', () => {
-    const goalObj = goalsAddInputCheck()
-    if (goalObj.isSuccess) {
-        addGoal(goalObj.data)
-        Swal.fire(
-            'Successful!',
-            goalObj.msg,
-            'success'
-        ).then((result) => {
-            location.reload();
-        })
-    }
-});
-//update goal record
-updateGoalBtn.addEventListener('click', () => {
-    const goalObj = goalUpdateInputCheck(currIdForUpdate)
-    if (goalObj.isSuccess) {
-        Swal.fire(
-            'Successful!',
-            goalObj.msg,
-            'success'
-        ).then((result) => {
-            location.reload();
-        })
-    }
-});
 
 //LONG TERM LIST
 ltList.addEventListener("click", function (event) {
@@ -351,6 +278,76 @@ stList.addEventListener("click", function (event) {
     }
 
 });
+
+/*****************  EVENT LISTENER  ******************/
+logoutBtn.addEventListener('click', () => {
+    logout();
+    Swal.fire(
+        'Goodbye!',
+        'Logout Successful',
+        'success'
+    ).then((result) => {
+        if (result.isConfirmed) {
+            location.replace(`${baseurl}/ready-set-goal`);
+        }
+    })
+});
+
+saveTitleBtn.addEventListener('click', () => {
+    if (titleInput.value.trim() !== '') {
+        updateTitle(titleInput.value.trim());
+        Swal.fire(
+            'Done!',
+            'Update Successful',
+            'success'
+        ).then((result) => {
+            location.reload();
+        })
+    } else {
+        Swal.fire(
+            'Opss...',
+            'Goal Title should not be empty ',
+            'error'
+        ).then((result) => {
+            location.reload();
+        })
+    }
+});
+
+//floating add button
+addGoalBtn.addEventListener('click', () => {
+    addMode(); goalsForm.reset();
+    goalsForm.classList.remove("was-validated");
+});
+
+//add goal record
+saveGoalBtn.addEventListener('click', () => {
+    const goalObj = goalsAddInputCheck()
+    if (goalObj.isSuccess) {
+        addGoal(goalObj.data)
+        Swal.fire(
+            'Successful!',
+            goalObj.msg,
+            'success'
+        ).then((result) => {
+            location.reload();
+        })
+    }
+});
+//update goal record
+updateGoalBtn.addEventListener('click', () => {
+    const goalObj = goalUpdateInputCheck(currIdForUpdate)
+    if (goalObj.isSuccess) {
+        Swal.fire(
+            'Successful!',
+            goalObj.msg,
+            'success'
+        ).then((result) => {
+            location.reload();
+        })
+    }
+});
+
 
 
 /*****************  VALIDATION  ******************/
