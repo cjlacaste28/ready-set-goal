@@ -58,6 +58,147 @@ const stList = document.getElementById('st-list');
 
 
 
+
+/*****************  EVENT LISTENER  ******************/
+logoutBtn.addEventListener('click', () => {
+    logout();
+    Swal.fire(
+        'Goodbye!',
+        'Logout Successful',
+        'success'
+    ).then((result) => {
+        if (result.isConfirmed) {
+            location.replace(`${baseurl}/ready-set-goal`);
+        }
+    })
+});
+
+saveTitleBtn.addEventListener('click', () => {
+    if (titleInput.value.trim() !== '') {
+        updateTitle(titleInput.value.trim());
+        Swal.fire(
+            'Done!',
+            'Update Successful',
+            'success'
+        ).then((result) => {
+            location.reload();
+        })
+    } else {
+        Swal.fire(
+            'Opss...',
+            'Goal Title should not be empty ',
+            'error'
+        ).then((result) => {
+            location.reload();
+        })
+    }
+});
+
+//floating add button
+addGoalBtn.addEventListener('click', () => {
+    addMode(); goalsForm.reset();
+    goalsForm.classList.remove("was-validated");
+});
+
+//add goal record
+saveGoalBtn.addEventListener('click', () => {
+    const goalObj = goalsAddInputCheck()
+    if (goalObj.isSuccess) {
+        addGoal(goalObj.data)
+        Swal.fire(
+            'Successful!',
+            goalObj.msg,
+            'success'
+        ).then((result) => {
+            location.reload();
+        })
+    }
+});
+//update goal record
+updateGoalBtn.addEventListener("click", function () {
+    const goalObj = goalUpdateInputCheck(currIdForUpdate)
+    if (goalObj.isSuccess) {
+        Swal.fire(
+            'Successful!',
+            goalObj.msg,
+            'success'
+        ).then((result) => {
+            location.reload();
+        })
+    }
+});
+
+//LONG TERM LIST
+ltList.addEventListener("click", function (event) {
+    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+    const goalID = parseInt(goalElement.dataset.id);
+    if (event.target.className.includes("delete-goal")) {
+        deleteConfirm(goalElement, goalID, "long-term", '#lt-list');
+    }
+
+    if (event.target.className.includes("edit-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        editGoalInit(goalID, "long-term", '#lt-list');
+    }
+    // console.log(document.querySelectorAll(`li[data-id="${goalID}"] > div > div > div > div > a`)[1].classList.remove('d-none'));
+    if (event.target.className.includes("done-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setDone(goalID);
+    }
+    if (event.target.className.includes("undone-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setUndone(goalID);
+    }
+
+
+});
+//MIDIUM TERM LIST
+mtList.addEventListener("click", function (event) {
+    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+    const goalID = parseInt(goalElement.dataset.id);
+    if (event.target.className.includes("delete-goal")) {
+        deleteConfirm(goalElement, goalID, "midium-term", '#mt-list');
+    }
+
+    if (event.target.className.includes("edit-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        editGoalInit(goalID, "midium-term", '#mt-list');
+    }
+    if (event.target.className.includes("done-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setDone(goalID);
+    }
+    if (event.target.className.includes("undone-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setUndone(goalID);
+    }
+
+});
+//SHORT TERM LIST
+stList.addEventListener("click", function (event) {
+    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+    const goalID = parseInt(goalElement.dataset.id);
+    if (event.target.className.includes("delete-goal")) {
+        deleteConfirm(goalElement, goalID, "short-term", '#st-list');
+    }
+
+    if (event.target.className.includes("edit-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        editGoalInit(goalID, "short-term", '#st-list');
+    }
+    if (event.target.className.includes("done-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setDone(goalID);
+    }
+    if (event.target.className.includes("undone-goal")) {
+        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
+        setUndone(goalID);
+    }
+
+});
+
+
+
 /*****************  UTILITY FUNCTION  ******************/
 //remove data from currLogin and back to login page
 const logout = () => currLogin.remove({ title: title }).write();
@@ -205,150 +346,6 @@ const editGoalInit = (goalID, term, list) => {
     goalInput.value = goalName;
     currIdForUpdate = goalID;
 }
-
-
-
-
-
-//LONG TERM LIST
-ltList.addEventListener("click", function (event) {
-    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-    const goalID = parseInt(goalElement.dataset.id);
-    if (event.target.className.includes("delete-goal")) {
-        deleteConfirm(goalElement, goalID, "long-term", '#lt-list');
-    }
-
-    if (event.target.className.includes("edit-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        editGoalInit(goalID, "long-term", '#lt-list');
-    }
-    // console.log(document.querySelectorAll(`li[data-id="${goalID}"] > div > div > div > div > a`)[1].classList.remove('d-none'));
-    if (event.target.className.includes("done-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        setDone(goalID);
-    }
-    if (event.target.className.includes("undone-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        setUndone(goalID);
-    }
-
-
-});
-//MIDIUM TERM LIST
-mtList.addEventListener("click", function (event) {
-    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-    const goalID = parseInt(goalElement.dataset.id);
-    if (event.target.className.includes("delete-goal")) {
-        deleteConfirm(goalElement, goalID, "midium-term", '#mt-list');
-    }
-
-    if (event.target.className.includes("edit-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        editGoalInit(goalID, "midium-term", '#mt-list');
-    }
-    if (event.target.className.includes("done-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        setDone(goalID);
-    }
-    if (event.target.className.includes("undone-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        setUndone(goalID);
-    }
-
-});
-//SHORT TERM LIST
-stList.addEventListener("click", function (event) {
-    const goalElement = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-    const goalID = parseInt(goalElement.dataset.id);
-    if (event.target.className.includes("delete-goal")) {
-        deleteConfirm(goalElement, goalID, "short-term", '#st-list');
-    }
-
-    if (event.target.className.includes("edit-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        editGoalInit(goalID, "short-term", '#st-list');
-    }
-    if (event.target.className.includes("done-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        setDone(goalID);
-    }
-    if (event.target.className.includes("undone-goal")) {
-        console.log(`Debug Info -> Goal ID: ${goalID} and Goal Element: ${goalElement}`);
-        setUndone(goalID);
-    }
-
-});
-
-/*****************  EVENT LISTENER  ******************/
-logoutBtn.addEventListener('click', () => {
-    logout();
-    Swal.fire(
-        'Goodbye!',
-        'Logout Successful',
-        'success'
-    ).then((result) => {
-        if (result.isConfirmed) {
-            location.replace(`${baseurl}/ready-set-goal`);
-        }
-    })
-});
-
-saveTitleBtn.addEventListener('click', () => {
-    if (titleInput.value.trim() !== '') {
-        updateTitle(titleInput.value.trim());
-        Swal.fire(
-            'Done!',
-            'Update Successful',
-            'success'
-        ).then((result) => {
-            location.reload();
-        })
-    } else {
-        Swal.fire(
-            'Opss...',
-            'Goal Title should not be empty ',
-            'error'
-        ).then((result) => {
-            location.reload();
-        })
-    }
-});
-
-//floating add button
-addGoalBtn.addEventListener('click', () => {
-    addMode(); goalsForm.reset();
-    goalsForm.classList.remove("was-validated");
-});
-
-//add goal record
-saveGoalBtn.addEventListener('click', () => {
-    const goalObj = goalsAddInputCheck()
-    if (goalObj.isSuccess) {
-        addGoal(goalObj.data)
-        Swal.fire(
-            'Successful!',
-            goalObj.msg,
-            'success'
-        ).then((result) => {
-            location.reload();
-        })
-    }
-});
-//update goal record
-updateGoalBtn.addEventListener("click", function () {
-    const goalObj = goalUpdateInputCheck(currIdForUpdate)
-    if (goalObj.isSuccess) {
-        Swal.fire(
-            'Successful!',
-            goalObj.msg,
-            'success'
-        ).then((result) => {
-            location.reload();
-        })
-    }
-});
-
-
 
 /*****************  VALIDATION  ******************/
 //add input validation
