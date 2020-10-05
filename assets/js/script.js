@@ -96,7 +96,8 @@ saveTitleBtn.addEventListener('click', () => {
 
 //floating add button
 addGoalBtn.addEventListener('click', () => {
-    addMode(); goalsForm.reset();
+    //addMode();
+    goalsForm.reset();
     goalsForm.classList.remove("was-validated");
 });
 
