@@ -3,7 +3,7 @@ let adapter = new LocalStorage("GoalsDB");
 let GoalsDB = low(adapter);
 //db init
 GoalsDB.defaults({ users: [], goals: [], currLogin: [] }).write();
-const baseurl = window.location;
+const baseurl = window.location.href;
 console.log(baseurl);
 /********************* INITIALIZATION ***********************/
 const signUpButton = document.getElementById('signUp');
